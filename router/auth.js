@@ -115,4 +115,4 @@ router.get("/logout", (req, res) => {
     res.send("Logout")
 })
 
-module.exports = router
+module.exports = route
