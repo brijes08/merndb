@@ -10,7 +10,7 @@ require("./DB/connection")
 
 app.use(express.static("public"));
 app.use(express.json())
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }))
+app.use(cors({ credentials: true, origin: "https://brijesreact.netlify.app" }))
 app.use(cookieParser())
 app.use(require("./router/auth"))
 

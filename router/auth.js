@@ -20,10 +20,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.post("/register", upload.single('file'), async (req, res) => {
+router.post("/register", upload.single('file'),  async (req, res) => {
 
     const { name, email, phone, work, images, password, cpassword } = req.body;
-    if (!name || !email || !phone || !work || !images || !password || !cpassword) {
+    if (!name || !email || !phone || !images || !work || !password || !cpassword) {
         res.status(400).json({ error: "Plese Fill The Fields Properly" })
     }
 
@@ -35,9 +35,14 @@ router.post("/register", upload.single('file'), async (req, res) => {
         } else if (password !== cpassword) {
             res.status(400).json({ error: "Password and Confirm Password are Not Same!!!" })
         } else {
-            const user = new User({ name, email, phone, work, images: 'http://localhost:5001' + '/images/' + req.file.filename, password, cpassword })
-            await user.save();
-            res.status(200).json({ message: "User Registered Successfully" })
+            const user = new User({ name, email, phone, work, images: 'https://portfoliodb-wj77.onrender.com' + '/images/' + req.file.filename, password, cpassword })
+            try {
+                await user.save();
+                res.status(200).json({ message: "User Registered Successfully" });
+              } catch (error) {
+                console.error("Error saving user:", error);
+                res.status(500).json({ message: "Internal Server Error" });
+              }
         }
 
     } catch (err) {
