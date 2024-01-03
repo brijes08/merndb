@@ -11,10 +11,12 @@ require("./DB/connection")
 
 app.use(express.static("public"));
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors({ credentials: true, origin: "https://brijesreact.netlify.app" }))
-app.use(cookieParser())
+
 app.use(require("./router/auth"))
 
 app.get("/", (req, res) => {
