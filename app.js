@@ -3,13 +3,14 @@ const bodyParser = require("body-parser");
 const cors = require("cors")
 const dotenv = require("dotenv")
 const cookieParser = require("cookie-parser")
+const path = require('path');
 const app = express();
 
 
 dotenv.config({ path: "./config.env" })
 require("./DB/connection")
 
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
