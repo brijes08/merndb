@@ -3,10 +3,18 @@ const bcrypt = require("bcryptjs")
 const multer = require('multer')
 const authenticate = require("../middleware/authenticate")
 const router = express.Router()
+const cookie = require('cookie');
 
 require("jsonwebtoken")
 require("../DB/connection")
 const User = require("../models/userSchema")
+
+
+router.get("/", (req, res) => {
+    res.send("this is my home page")
+})
+
+
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {

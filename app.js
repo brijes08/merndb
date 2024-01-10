@@ -1,7 +1,7 @@
 const express = require("express")
 const bodyParser = require("body-parser");
-const dotenv = require("dotenv")
 const cors = require("cors")
+const dotenv = require("dotenv")
 const cookieParser = require("cookie-parser")
 const app = express();
 
@@ -19,14 +19,13 @@ app.use(cors({ credentials: true, origin: "https://brijesreact.netlify.app" }))
 
 app.use(require("./router/auth"))
 
-app.get("/", (req, res) => {
-    res.send("this is my home page")
-})
-
 app.all("*", (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
 next();
 });
+
+
+
  
 const PORT = process.env.PORT;
 
