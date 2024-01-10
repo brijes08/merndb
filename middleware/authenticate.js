@@ -4,8 +4,14 @@ const User = require('../models/userSchema')
 const authenticate = async (req, res, next) => {
     try {
         const token = req.rawHeaders;
-        console.log(req);
-        console.log(token, '0');
+
+        const authIndex = token.indexOf('Authorization');
+        const authorizationValue = authIndex !== -1 ? token[authIndex + 1] : null;
+
+        console.log('Authorization Value:', authorizationValue);
+
+        // console.log(req);
+        // console.log(token, '0');
 
         const verifyToken = jwt.verify(token, process.env.SECRET_KEY);
         const rootUser = await User.findOne({_id: verifyToken._id, "tokens.token": token});
