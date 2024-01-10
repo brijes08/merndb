@@ -8,7 +8,7 @@ const authenticate = async (req, res, next) => {
         const authIndex = headersArray.indexOf('Authorization');
         const token = authIndex !== -1 ? headersArray[authIndex + 1] : null;
 
-        console.log('Authorization:', authorizationValue);
+        console.log('token:', token);
 
         // console.log(req);
         // console.log(token, '0');
