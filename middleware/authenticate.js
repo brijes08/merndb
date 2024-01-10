@@ -3,6 +3,7 @@ const User = require('../models/userSchema')
 
 const authenticate = async (req, res, next) => {
     try {
+        console.log(req, '-01');
         const token = req.cookies.jwtoken;
         console.log(token, '0');
 
