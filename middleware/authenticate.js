@@ -8,7 +8,7 @@ const authenticate = async (req, res, next) => {
         const authIndex = headersArray.indexOf('Authorization');
         const token = authIndex !== -1 ? headersArray[authIndex + 1] : null;
 
-        console.log('token:', token);
+        // console.log('token:', token);
 
         // console.log(req);
         // console.log(token, '0');
@@ -17,7 +17,7 @@ const authenticate = async (req, res, next) => {
         const rootUser = await User.findOne({_id: verifyToken._id, "tokens.token": token});
 
         req.user = verifyToken.user;
-        console.log(rootUser, '1');
+        // console.log(rootUser, '1');
 
         if (!rootUser) {
             throw new Error('User Not Founds');

@@ -10,7 +10,7 @@ const app = express();
 dotenv.config({ path: "./config.env" })
 require("./DB/connection")
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public/')));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
