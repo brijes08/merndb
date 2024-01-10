@@ -3,12 +3,12 @@ const User = require('../models/userSchema')
 
 const authenticate = async (req, res, next) => {
     try {
-        const token = req.rawHeaders;
+        const headersArray  = req.rawHeaders;
 
-        const authIndex = token.indexOf('Authorization');
-        const authorizationValue = authIndex !== -1 ? token[authIndex + 1] : null;
+        const authIndex = headersArray.indexOf('Authorization');
+        const token = authIndex !== -1 ? headersArray[authIndex + 1] : null;
 
-        console.log('Authorization Value:', authorizationValue);
+        console.log('Authorization:', authorizationValue);
 
         // console.log(req);
         // console.log(token, '0');
