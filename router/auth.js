@@ -89,13 +89,11 @@ router.post("/signin", async (req, res) => {
         }
 
     } catch (err) {
-
         console.log('Login Faild')
-
     }
 })
 
-router.get("/about", authenticate, (req, res) => {
+router.get("/about", authenticate,(req, res) => {
     console.log('About Us Page From Server')
     res.send(req.rootUser)
 })

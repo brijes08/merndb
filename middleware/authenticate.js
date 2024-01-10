@@ -3,8 +3,8 @@ const User = require('../models/userSchema')
 
 const authenticate = async (req, res, next) => {
     try {
-        console.log(req, '-01');
-        const token = req.cookies.authToken;
+        const token = req.cookies.jwtoken;
+        console.log(req);
         console.log(token, '0');
 
         const verifyToken = jwt.verify(token, process.env.SECRET_KEY);
@@ -14,7 +14,7 @@ const authenticate = async (req, res, next) => {
         console.log(rootUser, '1');
 
         if (!rootUser) {
-            throw new Error('User Not Found');
+            throw new Error('User Not Founds');
         } else {
             req.token = token;
             req.rootUser = rootUser;
