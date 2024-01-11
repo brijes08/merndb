@@ -106,7 +106,7 @@ router.post("/update", async (req, res) => {
         if (userData) {
             try {
                 const result = await User.updateOne(
-                    { _id: id }, // Use "_id" to find the user by ID
+                    { _id: _id }, // Use "_id" to find the user by ID
                     {
                         $set: {
                             name: name,
