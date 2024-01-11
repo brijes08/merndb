@@ -93,7 +93,7 @@ router.post("/signin", async (req, res) => {
 
 router.post("/update", async (req, res) => {
     const { _id, name, email, phone, work } = req.body;
-    
+    console.log(req.body, 'req.body')
     if (!_id || !name || !email || !phone || !work) {
         return res.status(400).json({ error: "Please Fill The Fields Properly" });
     }
