@@ -14,8 +14,6 @@ router.get("/", (req, res) => {
     res.send("this is my home page")
 })
 
-
-
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "public/images/");
@@ -25,8 +23,8 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + '-' + Math.round(Math.random() * 1E9) + '_' + file.originalname);
     },
 });
-
 const upload = multer({ storage: storage });
+
 
 router.post("/register", upload.single('file'),  async (req, res) => {
 
@@ -93,6 +91,95 @@ router.post("/signin", async (req, res) => {
     }
 })
 
+router.post("/update", async (req, res) => {
+    const { id, name, email, phone, work } = req.body;
+    
+    if (!id || !name || !email || !phone || !work) {
+        return res.status(400).json({ error: "Please Fill The Fields Properly" });
+    }
+
+    try {
+        const userData = await User.findOne({ _id: id }); // Assuming you are using "_id" as the identifier
+        // console.log(userData, 'userData')
+
+        if (userData) {
+            try {
+                const result = await User.updateOne(
+                    { _id: id }, // Use "_id" to find the user by ID
+                    {
+                        $set: {
+                            name: name,
+                            email: email,
+                            phone: phone,
+                            work: work
+                        }
+                    }
+                );
+
+                // console.log(result, 'result')
+                if (result.matchedCount === 1) {
+                    return res.status(200).json({ message: "User Updated Successfully" });
+                } else {
+                    return res.status(404).json({ message: "User not found" });
+                }
+            } catch (error) {
+                console.error("Error updating user:", error);
+                return res.status(500).json({ message: "Internal Server Error" });
+            }
+        } else {
+            return res.status(404).json({ message: "User not found" });
+        }
+    } catch (err) {
+        console.error('Error finding user:', err);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
+router.post("/updateImage", upload.single('file'), async (req, res) => {
+    const { id, images  } = req.body;
+    
+    if (!id || !images) {
+        return res.status(400).json({ error: "Please Fill The Fields Properly" });
+    }
+
+    try {
+        const userData = await User.findOne({ _id: id }); // Assuming you are using "_id" as the identifier
+        // console.log(userData, 'userData')
+
+        if (userData) {
+            try {
+                const result = await User.updateOne(
+                    { _id: id }, // Use "_id" to find the user by ID
+                    {
+                        $set: {
+                            images: 'https://portfoliodb-wj77.onrender.com' + '/images/' + req.file.filename, 
+                        }
+                    }
+                );
+
+                // console.log(result, 'result')
+                if (result.matchedCount === 1) {
+                    return res.status(200).json({ message: "User Updated Successfully" });
+                } else {
+                    return res.status(404).json({ message: "User not found" });
+                }
+            } catch (error) {
+                console.error("Error updating user:", error);
+                return res.status(500).json({ message: "Internal Server Error" });
+            }
+        } else {
+            return res.status(404).json({ message: "User not found" });
+        }
+    } catch (err) {
+        console.error('Error finding user:', err);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
+
+
+
+
 router.get("/about", authenticate,(req, res) => {
     console.log('About Us Page From Server')
     res.send(req.rootUser)
@@ -118,7 +205,6 @@ router.post("/contact", authenticate, async (req, res) => {
     res.status(200).json({message: "Message Sent Successfully"})
    }
 })
-
 
 router.get("/logout", (req, res) => {
     console.log('Logout Page From Server')
