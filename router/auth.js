@@ -92,9 +92,9 @@ router.post("/signin", async (req, res) => {
 })
 
 router.post("/update", async (req, res) => {
-    const { id, name, email, phone, work } = req.body;
+    const { _id, name, email, phone, work } = req.body;
     
-    if (!id || !name || !email || !phone || !work) {
+    if (!_id || !name || !email || !phone || !work) {
         return res.status(400).json({ error: "Please Fill The Fields Properly" });
     }
 
