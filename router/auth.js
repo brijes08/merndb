@@ -100,8 +100,8 @@ router.post("/update", async (req, res) => {
     }
 
     try {
-        const userData = await User.findOne({ _id: id }); // Assuming you are using "_id" as the identifier
-        console.log(userData, 'userData')
+        const userData = await User.findOne({ _id: _id }); // Assuming you are using "_id" as the identifier
+        // console.log(userData, 'userData')
 
         if (userData) {
             try {
@@ -117,7 +117,7 @@ router.post("/update", async (req, res) => {
                     }
                 );
 
-                console.log(result, 'result')
+                // console.log(result, 'result')
                 if (result.matchedCount === 1) {
                     return res.status(200).json({ message: "User Updated Successfully" });
                 } else {
