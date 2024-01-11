@@ -94,13 +94,14 @@ router.post("/signin", async (req, res) => {
 router.post("/update", async (req, res) => {
     const { _id, name, email, phone, work } = req.body;
     console.log(req.body, 'req.body')
+
     if (!_id || !name || !email || !phone || !work) {
         return res.status(400).json({ error: "Please Fill The Fields Properly" });
     }
 
     try {
         const userData = await User.findOne({ _id: id }); // Assuming you are using "_id" as the identifier
-        // console.log(userData, 'userData')
+        console.log(userData, 'userData')
 
         if (userData) {
             try {
@@ -116,7 +117,7 @@ router.post("/update", async (req, res) => {
                     }
                 );
 
-                // console.log(result, 'result')
+                console.log(result, 'result')
                 if (result.matchedCount === 1) {
                     return res.status(200).json({ message: "User Updated Successfully" });
                 } else {
@@ -124,7 +125,7 @@ router.post("/update", async (req, res) => {
                 }
             } catch (error) {
                 console.error("Error updating user:", error);
-                return res.status(500).json({ message: "Internal Server Error" });
+                return res.status(500).json({ message: "Internal Servers Errors" });
             }
         } else {
             return res.status(404).json({ message: "User not found" });
