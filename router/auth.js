@@ -91,14 +91,13 @@ router.post("/signin", async (req, res) => {
     }
 })
 
-router.post("/update", async (req, res) => {
-    const { _id, name, email, phone, work } = req.body;
-    console.log(req.body, 'req.body')
+router.post("/update", upload.single('file'), async (req, res) => {
+    const {_id, name, email, phone, work, images,} = req.body;
 
-    if (!_id || !name || !email || !phone || !work) {
-        return res.status(400).json({ error: "Please Fill The Fields Properly" });
+    if (!_id ||!name || !email || !phone || !images || !work) {
+        res.status(400).json({ error: "Plese Fill The Fields Properly" })
     }
-
+  
     try {
         const userData = await User.findOne({ _id: _id }); // Assuming you are using "_id" as the identifier
         // console.log(userData, 'userData')
@@ -112,7 +111,8 @@ router.post("/update", async (req, res) => {
                             name: name,
                             email: email,
                             phone: phone,
-                            work: work
+                            work: work,
+                            images: 'https://portfoliodb-wj77.onrender.com' + '/images/' + req.file.filename
                         }
                     }
                 );
