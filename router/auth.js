@@ -92,7 +92,24 @@ router.post("/signin", async (req, res) => {
 })
 
 router.post("/update", upload.single('file'), async (req, res) => {
-    const {_id, name, email, phone, work, images,} = req.body;
+    const {_id, name, email, phone, work} = req.body;
+    console.log(req.files, 'req.files')
+    const {images} = req.files;
+    let student_img;
+    
+    if (images.image) {
+      
+      if (images?.image?.length > 0) {
+        const studentImag = images?.image[0];
+        student_img = "/images/" + studentImag.filename;
+      }
+    }
+
+    if (student_img) {
+        updatedvalues.student_img = student_img;
+    }
+
+
 
     if (!_id ||!name || !email || !phone || !images || !work) {
         res.status(400).json({ error: "Plese Fill The Fields Properly" })
