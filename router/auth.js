@@ -133,7 +133,7 @@ router.post('/update', upload.single('image'), async (req, res) => {
 router.post("/delete", async (req, res) => {
     const { _id } = req.body;
     try {
-        const deletedData = await User.findByIdAndDelete(id);
+        const deletedData = await User.findByIdAndDelete(_id);
 
     if (!deletedData) {
       return res.status(404).json({ error: 'Data not found' });
