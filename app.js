@@ -33,7 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
-app.use(cors({ credentials: true, origin: "https://brijesreact.netlify.app" }))
+app.use(cors({ credentials: true, origin: "https://brijes.vercel.app" }))
 
 app.use(require("./router/auth"))
 
