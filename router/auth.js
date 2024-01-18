@@ -91,54 +91,44 @@ router.post("/signin", async (req, res) => {
     }
 })
 
-router.post("/update", upload.single('file'), async (req, res) => {
+router.post('/update', upload.single('image'), async (req, res) => {
     const { _id, name, email, phone, work } = req.body;
-    console.log(req.file, 'req.file'); // Use req.file instead of req.files
-    const student_img = req.file ? "/images/" + req.file.filename : undefined;
-
+    const student_img = req.file ? '/images/' + req.file.filename : undefined;
+  
     if (!_id || !name || !email || !phone || !work) {
-        return res.status(400).json({ error: "Please Fill The Fields Properly" });
+      return res.status(400).json({ error: 'Please Fill The Fields Properly' });
     }
-
+  
     try {
-        const userData = await User.findOne({ _id: _id });
-
-        if (userData) {
-            try {
-                const updateFields = {
-                    name: name,
-                    email: email,
-                    phone: phone,
-                    work: work
-                };
-
-                if (student_img) {
-                    updateFields.images = 'https://portfoliodb-wj77.onrender.com' + student_img;
-                }
-
-                const result = await User.updateOne(
-                    { _id: _id },
-                    { $set: updateFields }
-                );
-
-                if (result.matchedCount === 1) {
-                    return res.status(200).json({ message: "User Updated Successfully" });
-                } else {
-                    return res.status(404).json({ message: "User not found" });
-                }
-            } catch (error) {
-                console.error("Error updating user:", error);
-                return res.status(500).json({ message: "Internal Server Error" });
-            }
-        } else {
-            return res.status(404).json({ message: "User not found" });
+      const userData = await User.findOne({ _id: _id });
+  
+      if (userData) {
+        const updateFields = {
+          name: name,
+          email: email,
+          phone: phone,
+          work: work,
+        };
+  
+        if (student_img) {
+          updateFields.images = 'https://portfoliodb-wj77.onrender.com' + student_img;
         }
+  
+        const result = await User.updateOne({ _id: _id }, { $set: updateFields });
+  
+        if (result.matchedCount === 1) {
+          return res.status(200).json({ message: 'User Updated Successfully' });
+        } else {
+          return res.status(404).json({ message: 'User not found' });
+        }
+      } else {
+        return res.status(404).json({ message: 'User not found' });
+      }
     } catch (err) {
-        console.error('Error finding user:', err);
-        return res.status(500).json({ message: "Internal Server Error" });
+      console.error('Error updating user:', err);
+      return res.status(500).json({ message: 'Internal Server Error' });
     }
-});
-
+  });
 
 router.post("/updateImage", upload.single('file'), async (req, res) => {
     const { id, images  } = req.body;
