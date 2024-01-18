@@ -34,6 +34,7 @@ app.use(cookieParser());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors({ credentials: true, origin: "https://brijes.vercel.app" }))
+// app.use(cors({ credentials: true, origin: "http://localhost:3000" }))
 
 app.use(require("./router/auth"))
 
