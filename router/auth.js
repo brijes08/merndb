@@ -130,45 +130,20 @@ router.post('/update', upload.single('image'), async (req, res) => {
     }
   });
 
-router.post("/updateImage", upload.single('file'), async (req, res) => {
-    const { id, images  } = req.body;
-    
-    if (!id || !images) {
-        return res.status(400).json({ error: "Please Fill The Fields Properly" });
-    }
-
+router.post("/delete", async (req, res) => {
+    const { _id } = req.body;
     try {
-        const userData = await User.findOne({ _id: id }); // Assuming you are using "_id" as the identifier
-        // console.log(userData, 'userData')
+        const deletedData = await User.findByIdAndDelete(id);
 
-        if (userData) {
-            try {
-                const result = await User.updateOne(
-                    { _id: id }, // Use "_id" to find the user by ID
-                    {
-                        $set: {
-                            images: 'https://portfoliodb-wj77.onrender.com' + '/images/' + req.file.filename, 
-                        }
-                    }
-                );
-
-                // console.log(result, 'result')
-                if (result.matchedCount === 1) {
-                    return res.status(200).json({ message: "User Updated Successfully" });
-                } else {
-                    return res.status(404).json({ message: "User not found" });
-                }
-            } catch (error) {
-                console.error("Error updating user:", error);
-                return res.status(500).json({ message: "Internal Server Error" });
-            }
-        } else {
-            return res.status(404).json({ message: "User not found" });
-        }
-    } catch (err) {
-        console.error('Error finding user:', err);
-        return res.status(500).json({ message: "Internal Server Error" });
+    if (!deletedData) {
+      return res.status(404).json({ error: 'Data not found' });
     }
+
+    res.json({ message: 'Data deleted successfully', deletedData });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 
