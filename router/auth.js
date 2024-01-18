@@ -92,49 +92,35 @@ router.post("/signin", async (req, res) => {
 })
 
 router.post("/update", upload.single('file'), async (req, res) => {
-    const {_id, name, email, phone, work} = req.body;
-    console.log(req.files, 'req.files')
-    const {images} = req.files;
-    let student_img;
-    
-    if (images.image) {
-      
-      if (images?.image?.length > 0) {
-        const studentImag = images?.image[0];
-        student_img = "/images/" + studentImag.filename;
-      }
+    const { _id, name, email, phone, work } = req.body;
+    console.log(req.file, 'req.file'); // Use req.file instead of req.files
+    const student_img = req.file ? "/images/" + req.file.filename : undefined;
+
+    if (!_id || !name || !email || !phone || !work) {
+        return res.status(400).json({ error: "Please Fill The Fields Properly" });
     }
 
-    if (student_img) {
-        updatedvalues.student_img = student_img;
-    }
-
-
-
-    if (!_id ||!name || !email || !phone || !images || !work) {
-        res.status(400).json({ error: "Plese Fill The Fields Properly" })
-    }
-  
     try {
-        const userData = await User.findOne({ _id: _id }); // Assuming you are using "_id" as the identifier
-        // console.log(userData, 'userData')
+        const userData = await User.findOne({ _id: _id });
 
         if (userData) {
             try {
+                const updateFields = {
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    work: work
+                };
+
+                if (student_img) {
+                    updateFields.images = 'https://portfoliodb-wj77.onrender.com' + student_img;
+                }
+
                 const result = await User.updateOne(
-                    { _id: _id }, // Use "_id" to find the user by ID
-                    {
-                        $set: {
-                            name: name,
-                            email: email,
-                            phone: phone,
-                            work: work,
-                            images: 'https://portfoliodb-wj77.onrender.com' + '/images/' + req.file.filename
-                        }
-                    }
+                    { _id: _id },
+                    { $set: updateFields }
                 );
 
-                // console.log(result, 'result')
                 if (result.matchedCount === 1) {
                     return res.status(200).json({ message: "User Updated Successfully" });
                 } else {
@@ -142,7 +128,7 @@ router.post("/update", upload.single('file'), async (req, res) => {
                 }
             } catch (error) {
                 console.error("Error updating user:", error);
-                return res.status(500).json({ message: "Internal Servers Errors" });
+                return res.status(500).json({ message: "Internal Server Error" });
             }
         } else {
             return res.status(404).json({ message: "User not found" });
@@ -152,6 +138,7 @@ router.post("/update", upload.single('file'), async (req, res) => {
         return res.status(500).json({ message: "Internal Server Error" });
     }
 });
+
 
 router.post("/updateImage", upload.single('file'), async (req, res) => {
     const { id, images  } = req.body;
