@@ -78,8 +78,8 @@ router.post("/signin", async (req, res) => {
             })
 
             if (passCheck) {
-                res.status(200).json({ message: "You are Loged in Successfully!!!", token:token })
-            } else {
+                res.status(200).json({ message: "You are Loged in Successfully!!!", token:token,data:userEmail })
+          } else {
                 res.status(400).json({ error: "Invalid Email and Password!!!" })
             }
         } else {
