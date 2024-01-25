@@ -8,6 +8,7 @@ const cookie = require('cookie');
 require("jsonwebtoken")
 require("../DB/connection")
 const User = require("../models/userSchema")
+const UserContact = require("../models/userContactSchema")
 
 
 router.get("/", (req, res) => {
@@ -173,6 +174,24 @@ router.post("/contact", authenticate, async (req, res) => {
     const userMessage = await userContact.addMessage(name, email, phone, subject, message)
     await userContact.save()
     res.status(200).json({message: "Message Sent Successfully"})
+   }
+})
+
+router.post("/contact-msg", async (req, res) => {
+  const {name, email, phone, subject, message} = req.body;
+  if (!name || !email || !phone || !subject || !message) {
+   alert('Plese Fill The Fields Properly')
+   res.status(400).json({ error: "Plese Fill The Fields Properly" })
+  }
+
+
+   const userMessage = new UserContact({name, email, phone, subject, message})
+   try {
+     await userMessage.save();
+     res.status(200).json({ message: "User Registered Successfully" });
+   } catch (error) {
+     console.error("Error saving user:", error);
+     res.status(500).json({ message: "Internal Server Error" });
    }
 })
 
